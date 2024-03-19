@@ -73,6 +73,8 @@ tareaRouter.delete("/tareas/:id", authValidator, async (req, res) => {
   }
 });
 
+/* -------------- Actualizando tarea -------------- */
+
 tareaRouter.put(
   "/tareas/:id",
   authValidator,
@@ -98,6 +100,7 @@ tareaRouter.put(
   }
 );
 
+/* -------------- Búsqueda de tareas por título -------------- */
 tareaRouter.get("/tareas/busqueda", authValidator, async (req, res) => {
   try {
     const { search } = req.query;
