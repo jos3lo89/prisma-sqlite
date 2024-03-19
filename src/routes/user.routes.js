@@ -3,7 +3,7 @@ import prisma from "../config/db.js";
 import bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
 
-import { userSaveValidator } from "../middlewares/userDataValidator.js";
+import { dataSchemaValidator } from "../middlewares/userDataValidator.js";
 import { userLoginSchemaZ, userSavedScehmaZ } from "../schemas/userSchema.js";
 import { createToken } from "../libs/jwt.js";
 import { authValidator } from "../middlewares/authValidator.js";
@@ -14,7 +14,7 @@ const userRouter = Router();
 
 userRouter.post(
   "/users",
-  userSaveValidator(userSavedScehmaZ),
+  dataSchemaValidator(userSavedScehmaZ),
   async (req, res) => {
     try {
       const { nombre, apellido, correo, clave } = req.body;
@@ -50,7 +50,7 @@ userRouter.post(
 
 userRouter.post(
   "/users/login",
-  userSaveValidator(userLoginSchemaZ),
+  dataSchemaValidator(userLoginSchemaZ),
   async (req, res) => {
     try {
       const { correo, clave } = req.body;
