@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import userRouter from "../routes/user.routes.js";
 import { URL_CLIENT } from "../config/config.js";
+import tareaRouter from "../routes/tarea.routes.js";
 
 const app = express();
 app.use(
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api",userRouter);
+app.use("/api", userRouter);
+app.use("/api", tareaRouter);
 
 export default app;
