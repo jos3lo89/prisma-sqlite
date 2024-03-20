@@ -4,6 +4,7 @@ import axiosI from "@/axios/instance";
 import { type loginDataI } from "@/types/types";
 import { useRouter, RouterLink } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -16,11 +17,20 @@ const loginData: loginDataI = reactive({
 const handleLogin = async () => {
   try {
     const res = await axiosI.post("/users/login", loginData);
-    // console.log(res);
     authStore.token = res.data.token;
+    authStore.nombreUser = res.data.nombre;
     router.push({ name: "home" });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    error.response.data.message.forEach((err: string) => {
+      toast.warn(err, {
+        autoClose: 4000,
+        theme: "light",
+        closeOnClick: true,
+        pauseOnHover: true,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        transition: toast.TRANSITIONS.SLIDE,
+      });
+    });
   }
 };
 </script>
@@ -53,8 +63,10 @@ const handleLogin = async () => {
     </form>
     <div class="text-center m-4">
       <p>
-        ¿No tienes una cuenata? 
-        <RouterLink :to="{ name: 'register' }" class="text-blue-600">Registrarte</RouterLink>
+        ¿No tienes una cuenata?
+        <RouterLink :to="{ name: 'register' }" class="text-blue-600"
+          >Registrarte</RouterLink
+        >
       </p>
     </div>
   </div>

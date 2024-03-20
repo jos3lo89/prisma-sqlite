@@ -3,6 +3,7 @@ import axiosI from "@/axios/instance";
 import { onMounted, ref, type Ref } from "vue";
 import { type tareasI } from "@/types/types";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const tareas: Ref<tareasI[]> = ref([]);
@@ -25,7 +26,16 @@ const handleDeleteTask = async (id: String): Promise<void> => {
   try {
     const res = await axiosI.delete(`/tareas/${id}`);
     // console.log(res);
+
     askTask();
+    toast.warn("Tarea borrada", {
+      autoClose: 2000,
+      theme: "light",
+      closeOnClick: true,
+      pauseOnHover: true,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      transition: toast.TRANSITIONS.SLIDE,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -37,13 +47,17 @@ const handleAddTask = (): void => {
 
 // hacer con componentes dinamicos
 
-const handleUpdateTask = (title: string, description: string, id: string): void => {
+const handleUpdateTask = (
+  title: string,
+  description: string,
+  id: string
+): void => {
   router.push({
     name: "task",
     params: {
       title: title,
       description: description,
-      id: id
+      id: id,
     },
   });
 };

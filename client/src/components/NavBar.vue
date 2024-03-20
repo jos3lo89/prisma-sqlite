@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { RouterLink } from "vue-router";
 import axiosI from "@/axios/instance";
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "vue-router";
@@ -12,6 +11,8 @@ const handleLogout = async () => {
     const res = await axiosI.post("/users/logout");
     // console.log(res);
     authStore.token = undefined;
+    authStore.nombreUser = undefined;
+
     router.push({ name: "login" });
   } catch (error) {
     console.log(error);
@@ -24,20 +25,11 @@ const handleLogout = async () => {
     <div>
       <h1 class="text-xl capitalize">vue ts</h1>
     </div>
-    <!-- <nav class="space-x-4">
-      <RouterLink class="text-xl capitalize" :to="{ name: 'home' }"
-        >home</RouterLink
-      >
-      <RouterLink class="text-xl capitalize" :to="{ name: 'register' }"
-        >register</RouterLink
-      >
-      <RouterLink class="text-xl capitalize" :to="{ name: 'login' }"
-        >login</RouterLink
-      >
-     
-    </nav> -->
 
-    <div>
+    <div class="flex space-x-3">
+      <p class="text-xl capitalize">
+        {{ authStore.nombreUser === undefined ? "" : authStore.nombreUser }}
+      </p>
       <button
         v-if="authStore.token"
         @click="handleLogout()"

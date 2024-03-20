@@ -5,8 +5,9 @@ export const useAuthStore = defineStore(
   "auth",
   () => {
     const token: Ref<string | undefined> = ref(undefined);
+    const nombreUser: Ref<string | undefined> = ref(undefined);
 
-    return { token };
+    return { token, nombreUser };
   },
   {
     persist: true,

@@ -2,7 +2,8 @@
 import { reactive } from "vue";
 import { type registeUserI } from "@/types/types";
 import axiosI from "@/axios/instance";
-import { RouterLink } from 'vue-router';
+import { RouterLink } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const newUser: registeUserI = reactive({
   nombre: "",
@@ -15,8 +16,32 @@ const handleRegister = async () => {
   try {
     const res = await axiosI.post("/users", newUser);
     // console.log(res);
-  } catch (error) {
-    console.log(error);
+    if (res.status == 201) {
+      toast.success("usuario creado", {
+        autoClose: 4000,
+        theme: "light",
+        closeOnClick: true,
+        pauseOnHover: true,
+        position: toast.POSITION.TOP_RIGHT,
+        transition: toast.TRANSITIONS.SLIDE,
+      });
+
+      newUser.nombre = "";
+      newUser.apellido = "";
+      newUser.correo = "";
+      newUser.clave = "";
+    }
+  } catch (error: any) {
+    error.response.data.message.forEach((err: string) => {
+      toast.error(err, {
+        autoClose: 4000,
+        theme: "light",
+        closeOnClick: true,
+        pauseOnHover: true,
+        position: toast.POSITION.TOP_RIGHT,
+        transition: toast.TRANSITIONS.SLIDE,
+      });
+    });
   }
 };
 </script>
@@ -61,8 +86,10 @@ const handleRegister = async () => {
     </form>
     <div class="text-center m-4">
       <p>
-        ¿Ya tienes una cuenta? 
-        <RouterLink :to="{ name: 'login' }" class="text-blue-600">Inicia sesión</RouterLink>
+        ¿Ya tienes una cuenta?
+        <RouterLink :to="{ name: 'login' }" class="text-blue-600"
+          >Inicia sesión</RouterLink
+        >
       </p>
     </div>
   </div>

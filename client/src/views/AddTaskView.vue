@@ -3,6 +3,8 @@ import axiosI from "@/axios/instance";
 import { reactive } from "vue";
 import { type newTaskI } from "@/types/types";
 import { useRouter, useRoute } from "vue-router";
+import { toast } from "vue3-toastify";
+import { string } from "zod";
 
 const router = useRouter();
 const routerParams = useRoute();
@@ -17,10 +19,18 @@ const handleAdd = async (): Promise<void> => {
   try {
     const res = await axiosI.post("/tareas", newTask);
     // console.log(res);
-
     router.push({ name: "home" });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    error.response.data.message.forEach((err: string) => {
+      toast.warn(err, {
+        autoClose: 1500,
+        theme: "light",
+        closeOnClick: true,
+        pauseOnHover: true,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        transition: toast.TRANSITIONS.SLIDE,
+      });
+    });
   }
 };
 
@@ -29,8 +39,17 @@ const handleUpdateTask = async (id: any) => {
     const res = await axiosI.put(`/tareas/${id}`, newTask);
     // console.log(res);
     router.push({ name: "home" });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    error.response.data.message.forEach((err: string) => {
+      toast.warn(err, {
+        autoClose: 1500,
+        theme: "light",
+        closeOnClick: true,
+        pauseOnHover: true,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        transition: toast.TRANSITIONS.SLIDE,
+      });
+    });
   }
 };
 </script>
