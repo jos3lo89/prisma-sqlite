@@ -80,6 +80,7 @@ userRouter.post(
         nombre: userFound.nombre,
         apellido: userFound.apellido,
         correo: userFound.correo,
+        token: token,
       });
     } catch (error) {
       console.log(error.message);
